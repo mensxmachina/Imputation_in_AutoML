@@ -2,25 +2,11 @@ from re import L
 from scipy.stats import pearsonr, spearmanr
 import pandas as pd
 import numpy as np
+from statsmodels.stats.multitest import fdrcorrection
+import statsmodels.stats.multitest as smm
+import pandas as pd
+import seaborn as sn
 
-
-"""data = np.genfromtxt("TT.csv", delimiter=';')
-print(data)
-
-y  = data[:, -1]
-
-names = []
-for i in range(43):
-    names.append(input())
-
-for i in range(len(data[0])-1):
-    r, p = spearmanr(data[:, i], y)
-    if(p < 0.05):
-        if(i<43):
-            print(names[i], i, p, r)
-        else:
-            print('CORR', i, p, r)
-"""
 
 #Read Meta Features
 data = pd.read_csv('DatasetDetails-Extended2.csv',sep=';')
@@ -49,12 +35,6 @@ columns_best_overall = [
        'Indicator_Variables_and_Soft_Imputation',
        'Indicator_Variables_and_PPCA_Imputation',
        'Indicator_Variables_and_Denoise_autoencoder_imputation']
-
-"""best_overall_res = pd.DataFrame()
-for i in data2.columns:
-    if i in columns_best_overall:
-        best_overall_res = pd.concat([best_overall_res,data2[i]],axis=1)"""
-
 
 
 best_overall=data2[[
@@ -130,20 +110,9 @@ linear_method_list = []
 for i in range(len(meta_feature_p_vals)):
     linear_method_list = linear_method_list+current_meta
 
-from statsmodels.stats.multitest import fdrcorrection
-import statsmodels.stats.multitest as smm
 
-"""`b`, `bonferroni` : one-step correction
-    `s`, `sidak` : one-step correction
-    `hs`, `holm-sidak` : step down method using Sidak adjustments
-    `h`, `holm` : step-down method using Bonferroni adjustments
-    `sh`, `simes-hochberg` : step-up method  (independent)
-    `hommel` : closed method based on Simes tests (non-negative)
-    `fdr_i`, `fdr_bh` : Benjamini/Hochberg  (non-negative)
-    `fdr_n`, `fdr_by` : Benjamini/Yekutieli (negative)
-    'fdr_tsbh' : two stage fdr correction (Benjamini/Hochberg)
-    'fdr_tsbky' : two stage fdr correction (Benjamini/Krieger/Yekutieli)
-    'fdr_gbs' : adaptive step-down fdr correction (Gavrilov, Benjamini, Sarkar)"""
+
+
 
 rej, pval_corr = smm.multipletests(np.array(meta_feature_p_vals).flatten(), alpha=0.1, method='fdr_bh')[:2]
 #rej, pval_corr = smm.multipletests([0.01,0.05,0.05,0.08,0.1], alpha=0.05, method='fdr_bh')[:2]
@@ -153,32 +122,8 @@ print(res)
 print(len(res))
 
 
-import pandas as pd
-import seaborn as sn
 
 
 
 pvals_tbl=pd.DataFrame(meta_feature_p_vals,index=index_list,columns = current_meta)
 print(pvals_tbl)
-"""corr=pd.DataFrame(meta_feature_correlations,index=index_list,columns = current_meta)
-#corr.drop(['freq_class.sd'],axis=1,inplace=True)
-corr.dropna(how='any',axis=1,inplace=True)
-plt.title('Meta-feature correlation')
-sn.heatmap(corr, annot=True)
-plt.xlabel('Metafeature')
-plt.xticks(rotation = 60) # Rotates X-Axis Ticks by 45-degrees
-plt.ylabel('Imputation method')
-plt.show()
-
-
-
-
-pvals_tbl=pd.DataFrame(meta_feature_p_vals,index=index_list,columns = current_meta)
-#pvals_tbl.drop(['freq_class.sd'],axis=1,inplace=True)
-pvals_tbl.dropna(how='any',axis=1,inplace=True)
-plt.title('Meta-feature p-values')
-sn.heatmap(pvals_tbl, annot=True)
-plt.xticks(rotation = 60) # Rotates X-Axis Ticks by 45-degrees
-plt.ylabel('Imputation method')
-plt.xlabel('Metafeature',)
-plt.show()"""

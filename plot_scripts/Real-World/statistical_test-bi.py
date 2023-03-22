@@ -69,42 +69,7 @@ best_overall.dropna(axis=1,how='all',inplace=True)
 
 ################################
 plt.title('Indicator performance gain/loss')
-#('Best','BI+Best'),
-"""list_pairs_imp = [('MM','BI+MM'),('DAE','BI+DAE'),('GAIN','BI+GAIN'),('MF','BI+MF'),('SOFT','BI+SOFT'),('PPCA','BI+PPCA')]
-p_vals = []
-group_means = []
-for pair in list_pairs_imp:
-    without_bi, with_bi  = pair[0],pair[1]
-    auc_without_bi , auc_with_bi = best_overall[without_bi],best_overall[with_bi]
-    group_means.append((pair[0],auc_with_bi-auc_without_bi))
-    stat,pval = stats.ttest_rel(auc_without_bi, auc_with_bi,alternative='less')
-    print(without_bi , stat, pval)
-    stat,pval = stats.ttest_rel(auc_with_bi ,auc_without_bi,alternative='greater')
-    print(without_bi , stat, pval)
-    p_vals.append(pval)
 
-import statsmodels
-rej,q_values=statsmodels.stats.multitest.fdrcorrection(p_vals, alpha=0.05, method='indep', is_sorted=False)
-print(rej,q_values)"""
-
-
-"""#('Best','BI+Best'),
-list_pairs_imp = [('MM','BI+MM'),('DAE','BI+DAE'),('GAIN','BI+GAIN'),('MF','BI+MF'),('SOFT','BI+SOFT'),('PPCA','BI+PPCA')]
-p_vals = []
-group_means = []
-for pair in list_pairs_imp:
-    without_bi, with_bi  = pair[0],pair[1]
-    auc_without_bi , auc_with_bi = best_overall[without_bi],best_overall[with_bi]
-    group_means.append((pair[0],auc_with_bi-auc_without_bi))
-
-
-print(group_means)
-performance = [i[1] for i in group_means] 
-print(performance)
-# MM , DAE , GAIN , MF , SOFT , PPCA
-stat_f , p_val = f_oneway( performance[0] ,performance[1] , performance[2] , performance [ 3] , performance[4] )
-
-print (p_val )"""
 
 
 
